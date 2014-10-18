@@ -15,7 +15,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
    */
   public function testCantInitializeWithoutKey()
   {
-    $client = new Client("FAKE KEY");
+    $client = new Client("FAKE KEY", "FAKE SECRET KEY");
     $this->assertInstanceOf('Wkop\Client', $client);
   }
 }
