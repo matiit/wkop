@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Wkop" default="dist">
+      <!-- Run PSR-2 compliance checks. -->
+    <target name="phpcs">
+        <exec command="vendor/bin/phpcs --standard=PSR2 Wkop -n" dir="${project.basedir}" checkReturn="true" />
+    </target>
+
+    <target name="unit-tests" description="Run unit tests">
+        <exec passthru="true" command="vendor/bin/phpunit" checkReturn="true" />
+    </target>
+
+     <!-- ============================================  -->
+    <!-- (DEFAULT)  Target: dist                       -->
+    <!-- ============================================  -->
+    <target name="dist" depends="phpcs,unit-tests">
+        <echo msg="Building" />
+
+        <echo msg="Everything checked!" />
+    </target>
+</project>
