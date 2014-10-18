@@ -1,0 +1,17 @@
+{
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Mateusz Tracz",
+            "email": "matiqing@gmail.com",
+            "role": "lead"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Wkop\\": "Wkop/"
+        }
+    }
+}
+
