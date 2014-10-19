@@ -3,7 +3,7 @@
 <project name="Wkop" default="dist">
       <!-- Run PSR-2 compliance checks. -->
     <target name="phpcs">
-        <exec command="vendor/bin/phpcs --standard=PSR2 Wkop -n" dir="${project.basedir}" checkReturn="true" />
+        <exec passthru="true" command="vendor/bin/phpcs --standard=PSR2 Wkop -n" dir="${project.basedir}" checkReturn="true" />
     </target>
 
     <target name="unit-tests" description="Run unit tests">
