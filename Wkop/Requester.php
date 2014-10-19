@@ -7,16 +7,17 @@ class Requester
 
     private $accountKey;
 
-    private $userKey;
 
-    private $postData;
+    private $secretKey;
+
+    private $postData = null;
 
     private $url;
 
-    public function __construct($accountKey, $userKey, $url = null, $postData = null)
+    public function __construct($accountKey, $secretKey, $url = null, $postData = null)
     {
         $this->accountKey = $accountKey;
-        $this->userKey = $userKey;
+        $this->secretKey = $secretKey;
 
         if (! is_null($url)) {
             $this->setUrl($url);
@@ -43,6 +44,19 @@ class Requester
 
     public function getSigningKey()
     {
-        return "c1048ea53bdf3d60383b033c5d97f8c1";
+        if (! is_null($this->postData)) {
+            ksort($this->postData);
+        }
+
+        return md5($this->secretKey . $this->url . $this->implodePostDataOrNull());
+    }
+
+    private function implodePostDataOrNull()
+    {
+        if (is_null($this->postData)) {
+            return '';
+        }
+
+        return implode(',', array_values($this->postData));
     }
 }
