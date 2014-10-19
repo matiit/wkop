@@ -2,21 +2,43 @@
 
 namespace Wkop;
 
+use Wkop\Exceptions\UrlMissingException;
+
 class Requester
 {
 
+    /**
+     * @var string $accountKey
+     */
     private $accountKey;
 
-    private $userKey;
+    /**
+     * @var string $secretKey
+     */
+    private $secretKey;
 
-    private $postData;
+    /**
+     * @var array $postData
+     */
+    private $postData = null;
 
-    private $url;
+    /**
+     * @var string $url
+     */
+    private $url = null;
 
-    public function __construct($accountKey, $userKey, $url = null, $postData = null)
+    /**
+     * @param string $accountKey Wykop app key.
+     * @param string $secretKey Wykop app secret key.
+     * @param string $url Url.
+     * @param array $postData Data meant to be send as POST.
+     *
+     * @return Requester
+     */
+    public function __construct($accountKey, $secretKey, $url = null, $postData = null)
     {
         $this->accountKey = $accountKey;
-        $this->userKey = $userKey;
+        $this->secretKey = $secretKey;
 
         if (! is_null($url)) {
             $this->setUrl($url);
@@ -25,8 +47,15 @@ class Requester
         if (! is_null($postData)) {
             $this->setPostData($postData);
         }
+
+        return $this;
     }
 
+    /**
+     * @param string $url
+     *
+     * @return Requester
+     */
     public function setUrl($url)
     {
         $this->url = $url;
@@ -34,6 +63,11 @@ class Requester
         return $this;
     }
 
+    /**
+     * @param array $postData
+     *
+     * @return Requester
+     */
     public function setPostData($postData)
     {
         $this->postData = $postData;
@@ -41,8 +75,44 @@ class Requester
         return $this;
     }
 
+    /**
+     * Get checksum to sing requests.
+     *
+     * @return string
+     */
     public function getSigningKey()
     {
-        return "c1048ea53bdf3d60383b033c5d97f8c1";
+        if (is_null($this->url)) {
+            throw new UrlMissingException;
+        }
+
+        return $this->generateSigningKey();
+    }
+
+    /**
+     * Get imploded Post data.
+     * Comma separated post values, sorted alphabetically by key.
+     *
+     * @return string
+     */
+    private function implodePostDataOrNull()
+    {
+        if (is_null($this->postData)) {
+            return '';
+        }
+
+        return implode(',', array_values($this->postData));
+    }
+
+    /**
+     * @return string
+     */
+    private function generateSigningKey()
+    {
+        if (! is_null($this->postData)) {
+            ksort($this->postData);
+        }
+
+        return md5($this->secretKey . $this->url . $this->implodePostDataOrNull());
     }
 }
