@@ -7,15 +7,34 @@ use Wkop\Exceptions\UrlMissingException;
 class Requester
 {
 
+    /**
+     * @var string $accountKey
+     */
     private $accountKey;
 
-
+    /**
+     * @var string $secretKey
+     */
     private $secretKey;
 
+    /**
+     * @var array $postData
+     */
     private $postData = null;
 
+    /**
+     * @var string $url
+     */
     private $url = null;
 
+    /**
+     * @param string $accountKey Wykop app key.
+     * @param string $secretKey Wykop app secret key.
+     * @param string $url Url.
+     * @param array $postData Data meant to be send as POST.
+     *
+     * @return Requester
+     */
     public function __construct($accountKey, $secretKey, $url = null, $postData = null)
     {
         $this->accountKey = $accountKey;
@@ -28,8 +47,15 @@ class Requester
         if (! is_null($postData)) {
             $this->setPostData($postData);
         }
+
+        return $this;
     }
 
+    /**
+     * @param string $url
+     *
+     * @return Requester
+     */
     public function setUrl($url)
     {
         $this->url = $url;
@@ -37,6 +63,11 @@ class Requester
         return $this;
     }
 
+    /**
+     * @param array $postData
+     *
+     * @return Requester
+     */
     public function setPostData($postData)
     {
         $this->postData = $postData;
@@ -44,6 +75,11 @@ class Requester
         return $this;
     }
 
+    /**
+     * Get checksum to sing requests.
+     *
+     * @return string
+     */
     public function getSigningKey()
     {
         if (is_null($this->url)) {
@@ -53,6 +89,12 @@ class Requester
         return $this->generateSigningKey();
     }
 
+    /**
+     * Get imploded Post data.
+     * Comma separated post values, sorted alphabetically by key.
+     *
+     * @return string
+     */
     private function implodePostDataOrNull()
     {
         if (is_null($this->postData)) {
@@ -62,6 +104,9 @@ class Requester
         return implode(',', array_values($this->postData));
     }
 
+    /**
+     * @return string
+     */
     private function generateSigningKey()
     {
         if (! is_null($this->postData)) {
