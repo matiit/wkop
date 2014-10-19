@@ -2,7 +2,7 @@
 
 namespace Wkop\Exceptions;
 
-class WykopAPIKeyMissingException extends Exception
+class WykopAPIKeyMissingException extends \Exception
 {
 
 }

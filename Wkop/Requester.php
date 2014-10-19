@@ -2,6 +2,8 @@
 
 namespace Wkop;
 
+use Wkop\Exceptions\UrlMissingException;
+
 class Requester
 {
 
@@ -12,7 +14,7 @@ class Requester
 
     private $postData = null;
 
-    private $url;
+    private $url = null;
 
     public function __construct($accountKey, $secretKey, $url = null, $postData = null)
     {
@@ -44,11 +46,11 @@ class Requester
 
     public function getSigningKey()
     {
-        if (! is_null($this->postData)) {
-            ksort($this->postData);
+        if (is_null($this->url)) {
+            throw new UrlMissingException;
         }
 
-        return md5($this->secretKey . $this->url . $this->implodePostDataOrNull());
+        return $this->generateSigningKey();
     }
 
     private function implodePostDataOrNull()
@@ -58,5 +60,14 @@ class Requester
         }
 
         return implode(',', array_values($this->postData));
+    }
+
+    private function generateSigningKey()
+    {
+        if (! is_null($this->postData)) {
+            ksort($this->postData);
+        }
+
+        return md5($this->secretKey . $this->url . $this->implodePostDataOrNull());
     }
 }
