@@ -99,11 +99,13 @@ class Client
         $signingKey = $this->requester->getSigningKey();
 
         $response = $this->httpClient
-            ->post($url, [
-                'headers' => [
-                    'apisign' => $signingKey,
-                    ],
-                'body' => $postData
+            ->post(
+                $url,
+                [
+                    'headers' => [
+                        'apisign' => $signingKey,
+                        ],
+                    'body' => $postData
                 ]
             );
 
