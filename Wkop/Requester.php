@@ -86,7 +86,10 @@ class Requester
             throw new UrlMissingException;
         }
 
-        return $this->generateSigningKey();
+        $signingKey = $this->generateSigningKey();
+        $this->reset();
+
+        return $signingKey;
     }
 
     /**
@@ -114,5 +117,11 @@ class Requester
         }
 
         return md5($this->secretKey . $this->url . $this->implodePostDataOrNull());
+    }
+
+    private function reset()
+    {
+        $this->postData = null;
+        $this->url      = null;
     }
 }

@@ -56,4 +56,18 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
 
         $requester->getSigningKey();
     }
+
+    /**
+     * @expectedException Wkop\Exceptions\UrlMissingException
+     */
+    public function testResetsAfterGetKey()
+    {
+        $requester = new Requester('a', 'b');
+        $requester
+            ->setUrl('http://a.wykop.pl');
+
+        $requester->getSigningKey();
+
+        $requester->getSigningKey();
+    }
 }
