@@ -61,9 +61,9 @@ class Client
      */
     private $requester;
 
-    public function __construct($accountKey, $secretKey)
+    public function __construct($appKey, $secretKey)
     {
-        $this->accountKey = $accountKey;
+        $this->appKey = $appKey;
         $this->secretKey = $secretKey;
 
         $this->httpClient = new \GuzzleHttp\Client;
@@ -86,10 +86,10 @@ class Client
             return false;
         }
 
-        $url = 'http://a.wykop.pl/login/appkey/' . $this->appKey;
+        $url = 'http://a.wykop.pl/user/login/appkey,' . $this->appKey;
         $postData = [
             'login'         => $this->userLogin,
-            'accountKey'    => $this->userAccountKey,
+            'accountkey'    => $this->userAccountKey,
         ];
 
         $this->requester
@@ -98,6 +98,15 @@ class Client
 
         $signingKey = $this->requester->getSigningKey();
 
-        return $signingKey;
+        $response = $this->httpClient
+            ->post($url, [
+                'headers' => [
+                    'apisign' => $signingKey,
+                    ],
+                'body' => $postData
+                ]
+            );
+
+        return (string) $response->getBody();
     }
 }
