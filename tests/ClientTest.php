@@ -27,16 +27,58 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Ensure Client will use requester to login
+     * All infos (login, userAccountKey) should be set first.
      */
     public function testLogInUsesRequester()
     {
-        $requesterMock = $this->getMock('Requester', ['getSigningKey']);
+        $requesterMock = $this->getMock('Requester', [
+            'getSigningKey',
+            'setUrl',
+            'setPostData'
+            ]
+        );
+        
         $requesterMock->expects($this->once())
             ->method('getSigningKey');
 
+        $requesterMock->method('setUrl')
+            ->will($this->returnSelf());
+
+        $requesterMock->method('setPostData')
+            ->will($this->returnSelf());
+
         $client = new Client("FAKE KEY", "FAKE SECRET KEY");
+
+        $client->setUserCredentials("Login", "Fake user account key");
         $client->setRequester($requesterMock);
 
-        $client->login('fake user account key');
+        $client->logIn();
     }
+
+    /**
+     * Ensure that login returns false when no credentials provided.
+     */
+    public function testLoginReturnsFalseWhenNoCredentials()
+    {
+        $requesterMock = $this->getMock('Requester', [
+            'getSigningKey',
+            'setUrl',
+            'setPostData'
+            ]
+        );
+
+        $requesterMock->method('setUrl')
+            ->will($this->returnSelf());
+
+        $requesterMock->method('setPostData')
+            ->will($this->returnSelf());
+
+        $client = new Client('FAKE KEY', 'FAKE SECRET KEY');
+        $client->setRequester($requesterMock);
+
+        $loginResult = $client->logIn();
+
+        $this->assertFalse($loginResult);
+    }
+
 }
