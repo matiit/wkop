@@ -109,6 +109,7 @@ class Client
                 ]
             );
 
-        return (string) $response->getBody();
+        $this->userKey = $response->json();
+        return true;
     }
 }
