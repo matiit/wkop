@@ -109,8 +109,6 @@ class Client
                 ]
             );
 
-        var_dump($response->json());
-
         if (isset($response->json()['error'])) {
             $this->userKey = null;
             return false;
