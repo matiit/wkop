@@ -31,21 +31,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testLogInUsesRequester()
     {
-        $requesterMock = $this->getMock('Requester', [
-            'getSigningKey',
-            'setUrl',
-            'setPostData'
-            ]
-        );
-        
+        $requesterMock = $this->getRequesterMock();
+
         $requesterMock->expects($this->once())
             ->method('getSigningKey');
-
-        $requesterMock->method('setUrl')
-            ->will($this->returnSelf());
-
-        $requesterMock->method('setPostData')
-            ->will($this->returnSelf());
 
         $client = new Client("FAKE KEY", "FAKE SECRET KEY");
 
@@ -60,18 +49,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoginReturnsFalseWhenNoCredentials()
     {
-        $requesterMock = $this->getMock('Requester', [
-            'getSigningKey',
-            'setUrl',
-            'setPostData'
-            ]
-        );
-
-        $requesterMock->method('setUrl')
-            ->will($this->returnSelf());
-
-        $requesterMock->method('setPostData')
-            ->will($this->returnSelf());
+        $requesterMock = $this->getRequesterMock();
 
         $client = new Client('FAKE KEY', 'FAKE SECRET KEY');
         $client->setRequester($requesterMock);
@@ -79,6 +57,37 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $loginResult = $client->logIn();
 
         $this->assertFalse($loginResult);
+    }
+
+    public function testCanCheckLoginStatusAfterLoggingIn()
+    {
+        $requesterMock = $this->getRequesterMock();
+
+        $client = new Client('FAKE KEY', 'FAKE SECRET KEY');
+
+        $loginResult = $client->logIn();
+
+        $this->assertEquals(true, $loginResult);
+
+        $this->assertEquals(true, $client->loginStatus());
+    }
+
+    private function getRequesterMock()
+    {
+        $mock = $this->getMock('Requester', [
+            'getSigningKey',
+            'setUrl',
+            'setPostData'
+            ]
+        );
+
+        $mock->method('setUrl')
+            ->will($this->returnSelf());
+
+        $mock->method('setPostData')
+            ->will($this->returnSelf());
+
+        return $mock;
     }
 
 }
