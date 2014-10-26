@@ -5,6 +5,9 @@ namespace Wkop\Tests;
 use Wkop\Client;
 use Wkop\Requester;
 use Wkop\Exceptions\WykopAPIKeyMissingException;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Subscriber\Mock;
+use GuzzleHttp\Message\Response;
 
 /**
  * @covers Wkop\Client
@@ -21,7 +24,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     */
     public function canInit()
     {
-        $client = new Client("FAKE KEY", "FAKE SECRET KEY");
+        $client = new Client("FAKE KEY", "FAKE SECRET KEY", new GuzzleClient());
         $this->assertInstanceOf('Wkop\Client', $client);
     }
 
@@ -36,7 +39,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $requesterMock->expects($this->once())
             ->method('getSigningKey');
 
-        $client = new Client("FAKE KEY", "FAKE SECRET KEY");
+        $client = new Client("FAKE KEY", "FAKE SECRET KEY", new GuzzleClient());
 
         $client->setUserCredentials("Login", "Fake user account key");
         $client->setRequester($requesterMock);
@@ -51,7 +54,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $requesterMock = $this->getRequesterMock();
 
-        $client = new Client('FAKE KEY', 'FAKE SECRET KEY');
+        $client = new Client('FAKE KEY', 'FAKE SECRET KEY', new GuzzleClient());
         $client->setRequester($requesterMock);
 
         $loginResult = $client->logIn();
@@ -63,13 +66,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $requesterMock = $this->getRequesterMock();
 
-        $client = new Client('FAKE KEY', 'FAKE SECRET KEY');
+        $guzzleClient = new GuzzleClient();
+
+        $wykopApiReturn = '{"login":"falsy","email":"fff:795551508","public_email":"","name":"","www":"","jabber":"","gg":"","city":"","about":"","author_group":1,"links_added":53,"links_published":4,"comments":748,"rank":2606,"followers":14,"following":6,"entries":277,"entries_comments":2513,"diggs":930,"buries":343,"groups":0,"related_links":8,"signup_date":"2007-11-25 20:16:34","avatar":"http:\/\/xJ.cdn02.imgwykop.pl\/c3397992\/matiit_JMq2ooDOk7,q60.jpg","avatar_big":"http:\/\/xJ.cdn02.imgwykop.pl\/c3397992\/matiit_JMq2ooDOk7,q150.jpg","avatar_med":"http:\/\/xJ.cdn02.imgwykop.pl\/c3397992\/matiit_JMq2ooDOk7,q48.jpg","avatar_lo":"http:\/\/xJ.cdn02.imgwykop.pl\/c3397992\/matiit_JMq2ooDOk7,q30.jpg","is_observed":null,"is_blocked":null,"sex":"male","url":"http:\/\/www.wykop.pl\/ludzie\/matiit\/","violation_url":null,"userkey":"3fQGm:eOj7n:kA6y:bh9cY:i0mf2:zzzzz"}';
+
+        $wykopApiResponseMock = new Mock([
+            new Response(200, []),
+            $wykopApiReturn
+        ]);
+
+        $guzzleClient->getEmitter()->attach($wykopApiResponseMock);
+
+        $client = new Client('FAKE KEY', 'FAKE SECRET KEY', $guzzleClient);
+        $client->setRequester($requesterMock);
+        $client->setUserCredentials("login", "Fake user account key");
 
         $loginResult = $client->logIn();
 
+
         $this->assertEquals(true, $loginResult);
 
-        $this->assertEquals(true, $client->loginStatus());
+        $this->assertEquals(true, $client->getLoginStatus());
     }
 
     private function getRequesterMock()
@@ -89,5 +106,4 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         return $mock;
     }
-
 }

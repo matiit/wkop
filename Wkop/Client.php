@@ -61,12 +61,12 @@ class Client
      */
     private $requester;
 
-    public function __construct($appKey, $secretKey)
+    public function __construct($appKey, $secretKey, $httpClient)
     {
         $this->appKey = $appKey;
         $this->secretKey = $secretKey;
 
-        $this->httpClient = new \GuzzleHttp\Client;
+        $this->httpClient = $httpClient;
     }
 
     public function setRequester($requester)
@@ -109,7 +109,23 @@ class Client
                 ]
             );
 
-        $this->userKey = $response->json();
+        var_dump($response->json());
+
+        if (isset($response->json()['error'])) {
+            $this->userKey = null;
+            return false;
+        }
+
+        if (! isset($response->json()['userkey'])) {
+            return false;
+        }
+
+        $this->userKey = $response->json()['userkey'];
         return true;
+    }
+
+    public function getLoginStatus()
+    {
+        return ! is_null($this->userKey);
     }
 }
