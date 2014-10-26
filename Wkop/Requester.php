@@ -6,7 +6,6 @@ use Wkop\Exceptions\UrlMissingException;
 
 class Requester
 {
-
     /**
      * @var string $accountKey
      */
@@ -78,6 +77,7 @@ class Requester
     /**
      * Get checksum to sing requests.
      *
+     * @throws UrlMissingException
      * @return string
      */
     public function getSigningKey()

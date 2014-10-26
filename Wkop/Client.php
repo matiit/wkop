@@ -2,7 +2,7 @@
 
 namespace Wkop;
 
-use Requester;
+use Wkop\Requester;
 
 class Client
 {
@@ -61,6 +61,11 @@ class Client
      */
     private $requester;
 
+    /**
+     * @param $appKey
+     * @param $secretKey
+     * @param $httpClient
+     */
     public function __construct($appKey, $secretKey, $httpClient)
     {
         $this->appKey = $appKey;
@@ -69,17 +74,31 @@ class Client
         $this->httpClient = $httpClient;
     }
 
+    /**
+     * @param Requester $requester
+     */
     public function setRequester($requester)
     {
         $this->requester = $requester;
     }
 
+    /**
+     * @param $userLogin
+     * @param $userAccountKey
+     */
     public function setUserCredentials($userLogin, $userAccountKey)
     {
         $this->userLogin = $userLogin;
         $this->userAccountKey = $userAccountKey;
     }
 
+    /**
+     * Perform login action.
+     * Return boolean representation of failure or success
+     *
+     * @return bool
+     * @throws Exceptions\UrlMissingException
+     */
     public function logIn()
     {
         if (is_null($this->userLogin) || is_null($this->userAccountKey)) {
@@ -122,6 +141,9 @@ class Client
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function getLoginStatus()
     {
         return ! is_null($this->userKey);
