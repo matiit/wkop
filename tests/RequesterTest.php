@@ -2,7 +2,7 @@
 
 namespace Wkop\Tests;
 
-use Wkop\Requester;
+use Wkop\Signer;
 
 /**
  * @covers Wkop\Requester
@@ -11,7 +11,7 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
 {
     public function testGeneratingSigKeyBasicRequest()
     {
-        $requester = new Requester('abcdefgh', 'MNOPQRST');
+        $requester = new Signer('abcdefgh', 'MNOPQRST');
         $requester
             ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
             ->setPostData([
@@ -24,7 +24,7 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
 
     public function testGeneratingSigKeyWithBiggerPostRequest()
     {
-        $requester = new Requester('abcdefgh', 'MNOPQRST');
+        $requester = new Signer('abcdefgh', 'MNOPQRST');
         $requester
             ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
             ->setPostData([
@@ -40,7 +40,7 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
 
     public function testGeneratingSigKeyWithoutPostRequest()
     {
-        $requester = new Requester('abcdefgh', 'MNOPQRST');
+        $requester = new Signer('abcdefgh', 'MNOPQRST');
         $requester
             ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/');
 
@@ -52,7 +52,7 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
      */
     public function testExpectingExceptionWithoutUrlProvided()
     {
-        $requester = new Requester('abcdefgh', 'MNOPQRST');
+        $requester = new Signer('abcdefgh', 'MNOPQRST');
 
         $requester->getSigningKey();
     }
@@ -62,7 +62,7 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
      */
     public function testResetsAfterGetKey()
     {
-        $requester = new Requester('a', 'b');
+        $requester = new Signer('a', 'b');
         $requester
             ->setUrl('http://a.wykop.pl');
 

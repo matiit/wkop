@@ -4,7 +4,7 @@ namespace Wkop;
 
 use Wkop\Exceptions\UrlMissingException;
 
-class Requester
+class Signer
 {
     /**
      * @var string $accountKey
@@ -32,7 +32,7 @@ class Requester
      * @param string $url Url.
      * @param array $postData Data meant to be send as POST.
      *
-     * @return Requester
+     * @return Signer
      */
     public function __construct($accountKey, $secretKey, $url = null, $postData = null)
     {
@@ -53,7 +53,7 @@ class Requester
     /**
      * @param string $url
      *
-     * @return Requester
+     * @return Signer
      */
     public function setUrl($url)
     {
@@ -65,7 +65,7 @@ class Requester
     /**
      * @param array $postData
      *
-     * @return Requester
+     * @return Signer
      */
     public function setPostData($postData)
     {
