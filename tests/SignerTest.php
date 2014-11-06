@@ -5,27 +5,27 @@ namespace Wkop\Tests;
 use Wkop\Signer;
 
 /**
- * @covers Wkop\Requester
+ * @covers Wkop\Signer
  */
-class RequesterTest extends \PHPUnit_Framework_TestCase
+class SignerTest extends \PHPUnit_Framework_TestCase
 {
     public function testGeneratingSigKeyBasicRequest()
     {
-        $requester = new Signer('abcdefgh', 'MNOPQRST');
-        $requester
+        $signer = new Signer('abcdefgh', 'MNOPQRST');
+        $signer
             ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
             ->setPostData([
                 'embed' => 'http://serwer/plik.jpg',
                 'body' => 'przykładowy komentarz',
                 ]);
 
-        $this->assertEquals($requester->getSigningKey(), 'c1048ea53bdf3d60383b033c5d97f8c1');
+        $this->assertEquals($signer->getSigningKey(), 'c1048ea53bdf3d60383b033c5d97f8c1');
     }
 
     public function testGeneratingSigKeyWithBiggerPostRequest()
     {
-        $requester = new Signer('abcdefgh', 'MNOPQRST');
-        $requester
+        $signer = new Signer('abcdefgh', 'MNOPQRST');
+        $signer
             ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
             ->setPostData([
                 'embed' => 'http://serwer/plik.jpg',
@@ -35,39 +35,39 @@ class RequesterTest extends \PHPUnit_Framework_TestCase
                 'z' => 'z',
                 ]);
 
-        $this->assertEquals($requester->getSigningKey(), '7b21d329ed5a4ce5e741bcc794975a54');
+        $this->assertEquals($signer->getSigningKey(), '7b21d329ed5a4ce5e741bcc794975a54');
     }
 
     public function testGeneratingSigKeyWithoutPostRequest()
     {
-        $requester = new Signer('abcdefgh', 'MNOPQRST');
-        $requester
+        $signer = new Signer('abcdefgh', 'MNOPQRST');
+        $signer
             ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/');
 
-        $this->assertEquals($requester->getSigningKey(), '80d255965eff5bd36a7385bfcf14d0c2');
+        $this->assertEquals($signer->getSigningKey(), '80d255965eff5bd36a7385bfcf14d0c2');
     }
 
     /**
-     * @expectedException Wkop\Exceptions\UrlMissingException
+     * @expectedException \Wkop\Exceptions\UrlMissingException
      */
     public function testExpectingExceptionWithoutUrlProvided()
     {
-        $requester = new Signer('abcdefgh', 'MNOPQRST');
+        $signer = new Signer('abcdefgh', 'MNOPQRST');
 
-        $requester->getSigningKey();
+        $signer->getSigningKey();
     }
 
     /**
-     * @expectedException Wkop\Exceptions\UrlMissingException
+     * @expectedException \Wkop\Exceptions\UrlMissingException
      */
     public function testResetsAfterGetKey()
     {
-        $requester = new Signer('a', 'b');
-        $requester
+        $signer = new Signer('a', 'b');
+        $signer
             ->setUrl('http://a.wykop.pl');
 
-        $requester->getSigningKey();
+        $signer->getSigningKey();
 
-        $requester->getSigningKey();
+        $signer->getSigningKey();
     }
 }
