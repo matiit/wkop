@@ -3,7 +3,7 @@
 namespace Wkop\Tests;
 
 use Wkop\Client;
-use Wkop\Requester;
+use Wkop\Signer;
 use Wkop\Exceptions\WykopAPIKeyMissingException;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Subscriber\Mock;
@@ -93,7 +93,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     private function getRequesterMock()
     {
-        $mock = $this->getMock('Requester', [
+        $mock = $this->getMock('Signer', [
             'getSigningKey',
             'setUrl',
             'setPostData'

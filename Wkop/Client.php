@@ -2,7 +2,7 @@
 
 namespace Wkop;
 
-use Wkop\Requester;
+use Wkop\Signer;
 
 class Client
 {
@@ -55,9 +55,9 @@ class Client
     private $httpClient;
 
     /**
-     * Requester class.
+     * Signer class.
      *
-     * @var Requester $requester
+     * @var Signer $requester
      */
     private $requester;
 
@@ -75,7 +75,7 @@ class Client
     }
 
     /**
-     * @param Requester $requester
+     * @param Signer $requester
      */
     public function setRequester($requester)
     {
