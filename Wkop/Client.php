@@ -57,9 +57,9 @@ class Client
     /**
      * Signer class.
      *
-     * @var Signer $requester
+     * @var Signer $signer
      */
-    private $requester;
+    private $signer;
 
     /**
      * @param $appKey
@@ -75,11 +75,11 @@ class Client
     }
 
     /**
-     * @param Signer $requester
+     * @param Signer $signer
      */
-    public function setRequester($requester)
+    public function setSigner($signer)
     {
-        $this->requester = $requester;
+        $this->signer = $signer;
     }
 
     /**
@@ -111,11 +111,11 @@ class Client
             'accountkey'    => $this->userAccountKey,
         ];
 
-        $this->requester
+        $this->signer
             ->setUrl($url)
             ->setPostData($postData);
 
-        $signingKey = $this->requester->getSigningKey();
+        $signingKey = $this->signer->getSigningKey();
 
         $response = $this->httpClient
             ->post(
@@ -128,12 +128,14 @@ class Client
                 ]
             );
 
-        if (isset($response->json()['error'])) {
+        if ($response->getStatusCode() != 200) {
             $this->userKey = null;
             return false;
         }
 
         if (! isset($response->json()['userkey'])) {
+            // Can't really tell what kind of error is this.
+            $this->userKey = null;
             return false;
         }
 

@@ -35,15 +35,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testLogInUsesRequester()
     {
-        $requesterMock = $this->getRequesterMock();
+        $signerMock = $this->getSignerMock();
 
-        $requesterMock->expects($this->once())
+        $signerMock->expects($this->once())
             ->method('getSigningKey');
 
         $client = new Client("FAKE KEY", "FAKE SECRET KEY", new GuzzleClient());
 
         $client->setUserCredentials("Login", "Fake user account key");
-        $client->setRequester($requesterMock);
+        $client->setSigner($signerMock);
 
         $client->logIn();
     }
@@ -53,10 +53,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoginReturnsFalseWhenNoCredentials()
     {
-        $requesterMock = $this->getRequesterMock();
+        $signerMock = $this->getSignerMock();
 
         $client = new Client('FAKE KEY', 'FAKE SECRET KEY', new GuzzleClient());
-        $client->setRequester($requesterMock);
+        $client->setSigner($signerMock);
 
         $loginResult = $client->logIn();
 
@@ -65,7 +65,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testCanCheckLoginStatusAfterLoggingIn()
     {
-        $requesterMock = $this->getRequesterMock();
+        $signerMock = $this->getSignerMock();
 
         $guzzleClient = new GuzzleClient();
 
@@ -80,7 +80,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $guzzleClient->getEmitter()->attach($wykopApiResponseMock);
 
         $client = new Client('FAKE KEY', 'FAKE SECRET KEY', $guzzleClient);
-        $client->setRequester($requesterMock);
+        $client->setSigner($signerMock);
         $client->setUserCredentials("login", "Fake user account key");
 
         $loginResult = $client->logIn();
@@ -91,7 +91,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $client->getLoginStatus());
     }
 
-    private function getRequesterMock()
+    public function testCanSendNormalRequest()
+    {
+
+    }
+
+    private function getSignerMock()
     {
         $mock = $this->getMock('Signer', [
             'getSigningKey',
