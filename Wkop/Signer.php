@@ -7,9 +7,9 @@ use Wkop\Exceptions\UrlMissingException;
 class Signer
 {
     /**
-     * @var string $accountKey
+     * @var string $appKey
      */
-    private $accountKey;
+    private $appKey;
 
     /**
      * @var string $secretKey
@@ -27,16 +27,16 @@ class Signer
     private $url = null;
 
     /**
-     * @param string $accountKey Wykop app key.
+     * @param string $appKey Wykop app key.
      * @param string $secretKey Wykop app secret key.
      * @param string $url Url.
      * @param array $postData Data meant to be send as POST.
      *
      * @return Signer
      */
-    public function __construct($accountKey, $secretKey, $url = null, $postData = null)
+    public function __construct($appKey, $secretKey, $url = null, $postData = null)
     {
-        $this->accountKey = $accountKey;
+        $this->appKey = $appKey;
         $this->secretKey = $secretKey;
 
         if (! is_null($url)) {
