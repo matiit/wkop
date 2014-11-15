@@ -198,13 +198,15 @@ class Client
         $signingKey = $this->signer->getSigningKey();
 
         $response = $this->httpClient
-            ->post($url,
+            ->post(
+                $url,
                 [
                     'headers' => [
                         'apisign' => $signingKey
                     ],
                     'body' => $postData
-                ]);
+                ]
+            );
 
         return $response->json();
     }
