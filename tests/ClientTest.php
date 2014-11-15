@@ -93,6 +93,20 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testCanSendNormalRequest()
     {
+        $signerMock = $this->getSignerMock();
+        $signerMock->expects($this->exactly(2))
+            ->method('getSigningKey');
+
+        $guzzleClient = new GuzzleClient();
+        $client = new Client('FAKE KEY', 'FAKE SECRET KEY', $guzzleClient);
+
+        $client->setSigner($signerMock);
+
+        $client->setUserCredentials('login', 'acc key');
+
+        $client->login();
+
+        $client->get('/observatory');
 
     }
 

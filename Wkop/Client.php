@@ -77,7 +77,7 @@ class Client
     /**
      * @param Signer $signer
      */
-    public function setSigner($signer)
+    public function setSigner(Signer $signer)
     {
         $this->signer = $signer;
     }
