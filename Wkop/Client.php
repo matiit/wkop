@@ -150,4 +150,33 @@ class Client
     {
         return ! is_null($this->userKey);
     }
+
+    /**
+     * Get resources from API.
+     *
+     * @param $resource
+     * @param $params
+     * @return mixed
+     */
+    public function get($resource, $params = [])
+    {
+        $url = 'http://a.wykop.pl/' . $resource . '/' . implode('/', $params)
+            . '/appkey,' . $this->appKey . ',userkey,' . $this->userKey;
+
+        $this->signer->setUrl($url);
+        $signingKey = $this->signer->getSigningKey();
+
+
+        $response = $this->httpClient
+            ->get(
+                $url,
+                [
+                    'headers' => [
+                        'apisign' => $signingKey,
+                    ],
+                ]
+            );
+
+        return $response->json();
+    }
 }
