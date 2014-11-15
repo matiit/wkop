@@ -93,6 +93,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testCanSendNormalRequest()
     {
         $signerMock = $this->getSignerMock();
+        // Ensure That request are signed twice (login and get)
         $signerMock->expects($this->exactly(2))
             ->method('getSigningKey');
 
@@ -107,6 +108,25 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $client->get('/observatory');
 
+    }
+
+    public function testCanSendPostRequest()
+    {
+        $signerMock = $this->getSignerMock();
+        // Ensure That request are signed twice (login and post)
+        $signerMock->expects($this->exactly(2))
+            ->method('getSigningKey');
+
+        $guzzleClient = new GuzzleClient();
+        $client = new Client('FAKE KEY', 'FAKE SECRET KEY', $guzzleClient);
+
+        $client->setSigner($signerMock);
+
+        $client->setUserCredentials('login', 'acc key');
+
+        $client->login();
+
+        $client->post('/observatory', [], [], []);
     }
 
     private function getSignerMock()

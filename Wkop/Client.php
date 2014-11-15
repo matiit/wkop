@@ -160,8 +160,7 @@ class Client
      */
     public function get($resource, $params = [], $methodParams = [])
     {
-        $url = 'http://a.wykop.pl/' . $resource . '/' . implode('/', $params)
-            . '/appkey,' . $this->appKey . ',userkey,' . $this->userKey . $this->implodeMethodParams($methodParams);
+        $url = $this->prepareUrl($resource, $params, $methodParams);
 
         $this->signer->setUrl($url);
         $signingKey = $this->signer->getSigningKey();
@@ -181,6 +180,36 @@ class Client
     }
 
     /**
+     * Post data
+     *
+     * @param $resource
+     * @param array $params
+     * @param array $methodParams
+     * @param array $postData
+     * @return mixed
+     * @throws Exceptions\UrlMissingException
+     */
+    public function post($resource, $params = [], $methodParams = [], $postData = [])
+    {
+        $url = $this->prepareUrl($resource, $params, $methodParams);
+
+        $this->signer->setUrl($url)->setPostData($postData);
+
+        $signingKey = $this->signer->getSigningKey();
+
+        $response = $this->httpClient
+            ->post($url,
+                [
+                    'headers' => [
+                        'apisign' => $signingKey
+                    ],
+                    'body' => $postData
+                ]);
+
+        return $response->json();
+    }
+
+    /**
      * Return comma separated values.
      *
      * @param $methodParams
@@ -194,5 +223,18 @@ class Client
         }
 
         return $result;
+    }
+
+    /**
+     * @param $resource
+     * @param $params
+     * @param $methodParams
+     * @return string
+     */
+    private function prepareUrl($resource, $params, $methodParams)
+    {
+        $url = 'http://a.wykop.pl/' . $resource . '/' . implode('/', $params)
+            . '/appkey,' . $this->appKey . ',userkey,' . $this->userKey . $this->implodeMethodParams($methodParams);
+        return $url;
     }
 }
