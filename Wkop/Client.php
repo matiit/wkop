@@ -158,10 +158,10 @@ class Client
      * @param $params
      * @return mixed
      */
-    public function get($resource, $params = [])
+    public function get($resource, $params = [], $methodParams = [])
     {
         $url = 'http://a.wykop.pl/' . $resource . '/' . implode('/', $params)
-            . '/appkey,' . $this->appKey . ',userkey,' . $this->userKey;
+            . '/appkey,' . $this->appKey . ',userkey,' . $this->userKey . $this->implodeMethodParams($methodParams);
 
         $this->signer->setUrl($url);
         $signingKey = $this->signer->getSigningKey();
@@ -178,5 +178,21 @@ class Client
             );
 
         return $response->json();
+    }
+
+    /**
+     * Return comma separated values.
+     *
+     * @param $methodParams
+     * @return string
+     */
+    private function implodeMethodParams($methodParams)
+    {
+        $result = ",";
+        foreach ($methodParams as $key => $value) {
+            $result .= $key . ',' . $value;
+        }
+
+        return $result;
     }
 }
