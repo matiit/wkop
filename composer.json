@@ -1,6 +1,9 @@
 {
+    "name": "matiit/wkop",
     "type": "library",
     "license": "BSD-3-Clause",
+    "description": "Wykop API client",
+    "keywords": ["client", "wykop"],
     "authors": [
         {
             "name": "Mateusz Tracz",
