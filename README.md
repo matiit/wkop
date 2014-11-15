@@ -15,6 +15,7 @@ And execute
 
 ## Usage
 
+```php
 	use Wkop\Factory;
 
     $client = Factory::get('APP KEY', 'SECRET KEY');
@@ -30,3 +31,4 @@ And execute
 	// Post to resources
 	// Resource name, method parameters, api parameters, post parameters
 	$result = $client->post('entries', ['add'], [], ['body' => "test"]);
+```
