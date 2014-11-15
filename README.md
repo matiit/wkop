@@ -16,6 +16,8 @@ And execute
 ## Usage
 
 ```php
+    <?php
+
 	use Wkop\Factory;
 
     $client = Factory::get('APP KEY', 'SECRET KEY');
