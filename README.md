@@ -1,4 +1,4 @@
-[ ![Codeship Status for matiit/wkop](https://www.codeship.io/projects/db6b77d0-393d-0132-ffeb-4eb13bd0ee77/status)](https://www.codeship.io/projects/42178)
+I[ ![Codeship Status for matiit/wkop](https://www.codeship.io/projects/db6b77d0-393d-0132-ffeb-4eb13bd0ee77/status)](https://www.codeship.io/projects/42178)
 
 # Simple Wykop client library
 
@@ -15,7 +15,9 @@ And execute
 
 ## Usage
 
+
 ```php
+
     <?php
 
 	use Wkop\Factory;
@@ -33,8 +35,14 @@ And execute
 	// Post to resources
 	// Resource name, method parameters, api parameters, post parameters
 	$result = $client->post('entries', ['add'], [], ['body' => "test"]);
-```
+
+
+## Connecting accounts
+
+
+
 ```php
+
 	<?php
 
 	use Wkop\Factory;
@@ -63,6 +71,7 @@ And execute
     $client->logIn();
 
     // From this moment, you will be able to make API calls as logged user.
+
 
 ## Ideas
 
