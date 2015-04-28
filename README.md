@@ -15,7 +15,9 @@ And execute
 
 ## Usage
 
+
 ```php
+
     <?php
 
 	use Wkop\Factory;
@@ -34,7 +36,12 @@ And execute
 	// Resource name, method parameters, api parameters, post parameters
 	$result = $client->post('entries', ['add'], [], ['body' => "test"]);
 ```
+
+## Connecting accounts
+
+
 ```php
+
 	<?php
 
 	use Wkop\Factory;
@@ -63,6 +70,7 @@ And execute
     $client->logIn();
 
     // From this moment, you will be able to make API calls as logged user.
+```
 
 ## Ideas
 
