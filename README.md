@@ -46,7 +46,7 @@ And execute
 
 	use Wkop\Factory;
 
-	$url = Wkop\Helpers::Wkop\Helpers::getConnectUrl('REDIRECT URL', 'APP KEY, 'SECRET KEY');
+	$url = Wkop\Helpers::Wkop\Helpers::getConnectUrl('REDIRECT URL', 'APP KEY', 'SECRET KEY');
 	$client = Factory::get('APP KEY', 'SECRET KEY');
 
     /**
