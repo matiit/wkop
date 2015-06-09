@@ -1,8 +1,9 @@
 [ ![Codeship Status for matiit/wkop](https://www.codeship.io/projects/db6b77d0-393d-0132-ffeb-4eb13bd0ee77/status)](https://www.codeship.io/projects/42178)
 
-# Simple Wykop client library
-
 [![Join the chat at https://gitter.im/matiit/wkop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matiit/wkop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+
+# Simple Wykop client library
 
 ## Instalation
 
