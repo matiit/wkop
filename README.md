@@ -2,6 +2,8 @@
 
 # Simple Wykop client library
 
+[![Join the chat at https://gitter.im/matiit/wkop](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/matiit/wkop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Instalation
 
 You'll need to add the package to the require section of your app composer.json file:
