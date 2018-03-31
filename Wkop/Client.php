@@ -105,7 +105,7 @@ class Client
             return false;
         }
 
-        $url = 'http://a.wykop.pl/user/login/appkey,' . $this->appKey;
+        $url = 'https://a.wykop.pl/user/login/appkey,' . $this->appKey;
         $postData = [
             'login'         => $this->userLogin,
             'accountkey'    => $this->userAccountKey,
@@ -235,7 +235,7 @@ class Client
      */
     private function prepareUrl($resource, $params, $methodParams)
     {
-        $url = 'http://a.wykop.pl/' . $resource . '/' . implode('/', $params)
+        $url = 'https://a.wykop.pl/' . $resource . '/' . implode('/', $params)
             . '/appkey,' . $this->appKey . ',userkey,' . $this->userKey . $this->implodeMethodParams($methodParams);
         return $url;
     }

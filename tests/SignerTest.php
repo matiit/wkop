@@ -13,20 +13,20 @@ class SignerTest extends \PHPUnit_Framework_TestCase
     {
         $signer = new Signer('abcdefgh', 'MNOPQRST');
         $signer
-            ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
+            ->setUrl('https://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
             ->setPostData([
                 'embed' => 'http://serwer/plik.jpg',
                 'body' => 'przykładowy komentarz',
                 ]);
 
-        $this->assertEquals($signer->getSigningKey(), 'c1048ea53bdf3d60383b033c5d97f8c1');
+        $this->assertEquals($signer->getSigningKey(), '29a7d686a55373358cc6c9220217556a');
     }
 
     public function testGeneratingSigKeyWithBiggerPostRequest()
     {
         $signer = new Signer('abcdefgh', 'MNOPQRST');
         $signer
-            ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
+            ->setUrl('https://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/')
             ->setPostData([
                 'embed' => 'http://serwer/plik.jpg',
                 'body' => 'przykładowy komentarz',
@@ -35,16 +35,16 @@ class SignerTest extends \PHPUnit_Framework_TestCase
                 'z' => 'z',
                 ]);
 
-        $this->assertEquals($signer->getSigningKey(), '7b21d329ed5a4ce5e741bcc794975a54');
+        $this->assertEquals($signer->getSigningKey(), 'd62c51da69f01c15d4c0b9eae663f082');
     }
 
     public function testGeneratingSigKeyWithoutPostRequest()
     {
         $signer = new Signer('abcdefgh', 'MNOPQRST');
         $signer
-            ->setUrl('http://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/');
+            ->setUrl('https://a.wykop.pl/entries/add/appkey/abcdefgh/userkey/klucz_zalogowanego_użytkownika/');
 
-        $this->assertEquals($signer->getSigningKey(), '80d255965eff5bd36a7385bfcf14d0c2');
+        $this->assertEquals($signer->getSigningKey(), 'bb512372d34497c6bc6def07a48a4900');
     }
 
     /**
@@ -64,7 +64,7 @@ class SignerTest extends \PHPUnit_Framework_TestCase
     {
         $signer = new Signer('a', 'b');
         $signer
-            ->setUrl('http://a.wykop.pl');
+            ->setUrl('https://a.wykop.pl');
 
         $signer->getSigningKey();
 

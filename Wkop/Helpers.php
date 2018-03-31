@@ -16,6 +16,6 @@ class Helpers
         $redirectUrlEncoded = urlencode(base64_encode($redirectUrl));
         $secure = md5($appSecret . $redirectUrl);
 
-        return "http://a.wykop.pl/user/connect/appkey," . $appKey . ",redirect," . $redirectUrlEncoded . ",secure," . $secure;
+        return "https://a.wykop.pl/user/connect/appkey," . $appKey . ",redirect," . $redirectUrlEncoded . ",secure," . $secure;
     }
 }
